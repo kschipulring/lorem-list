@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Tab } from '../tab';
 import { TabContentsService } from '../tab-contents.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { TabContentsService } from '../tab-contents.service';
 })
 export class TabberListComponent implements OnInit {
 
-	tabs: Tab;
+	tabs: Tab[];
 
   constructor(private tabContentsService: TabContentsService) {
     document.addEventListener('keyup', function(e) {
