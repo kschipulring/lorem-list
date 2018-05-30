@@ -1,0 +1,12 @@
+<h2>Use tab button to choose down, use shift+tab to choose up</h2>
+<h3>Use up and down arrows to move the chosen item</h3>
+
+<ul class="tabs" id="theTabs">
+  <li *ngFor="let tab of tabs" (keydown)="onKeydown($event, tab)" id="tab_{{tab.id}}" class="li_tab">
+
+      <a href="#{{tab.id}}" class="tab" id="a_{{tab.id}}"><span class="badge">{{tab.id}}</span> {{tab.name}}</a>
+
+  </li>
+</ul>
+
+<a href="#reset" (click)="tabsReset()">RESET</a>
