@@ -61,12 +61,10 @@ export class TabberListComponent implements OnInit {
 
     var elems = document.querySelectorAll(".li_tab");
 
-    [].forEach.call(elems, function(el) {
-      //el.classList.remove("tabselected");
+    for( var i=0; i<this.tabs.length; i++ ){
+      var theId = "tab_" + i;
 
-      //console.log( "el.id = ", el.id.replace("tab_", "")  );
-
-      var theId = parseInt( el.id.replace("tab_", "") );
+      var el = document.getElementById( theId );
 
       //remove the focus from this tab
       el.blur();
@@ -75,6 +73,6 @@ export class TabberListComponent implements OnInit {
 
       //remove the focus appearance
       el.classList.remove("tabselected");
-    });
+    }
   }
 }
