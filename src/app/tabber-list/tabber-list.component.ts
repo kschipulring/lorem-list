@@ -64,11 +64,17 @@ export class TabberListComponent implements OnInit {
     [].forEach.call(elems, function(el) {
       //el.classList.remove("tabselected");
 
-      console.log( "el.id = ", el.id.replace("tab_", "")  );
+      //console.log( "el.id = ", el.id.replace("tab_", "")  );
 
       var theId = parseInt( el.id.replace("tab_", "") );
 
+      //remove the focus from this tab
+      el.blur();
+
       theTabs.insertBefore(el, theTabs.childNodes[ theId ]);
+
+      //remove the focus appearance
+      el.classList.remove("tabselected");
     });
   }
 }
