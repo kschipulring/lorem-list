@@ -46,7 +46,8 @@ export class TabberListComponent implements OnInit {
       theTabs.insertBefore(document.getElementById("tab_" + obj.id), document.getElementById("tab_" + obj.id).previousSibling );
     }
 
-    if (event.key === "ArrowDown" ) {
+    if (event.key === "ArrowDown" &&
+    document.getElementById("tab_" + obj.id).nextSibling ) {
 
       // Insert <li> after its next sibling
       theTabs.insertBefore(document.getElementById("tab_" + obj.id), document.getElementById("tab_" + obj.id).nextSibling.nextSibling );
