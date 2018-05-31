@@ -40,13 +40,13 @@ export class TabberListComponent implements OnInit {
     // Get the <ul> element which is the parent of the tabs
     var theTabs = document.getElementById("theTabs");
 
-    if (event.key === "ArrowUp" ) {
+    if ( event.code == "ArrowUp" || event.key == "ArrowUp" ) {
 
       // Insert this <li> before it's earlier sibling
       theTabs.insertBefore(document.getElementById("tab_" + obj.id), document.getElementById("tab_" + obj.id).previousSibling );
     }
 
-    if (event.key === "ArrowDown" &&
+    if ( ( event.code == "ArrowDown" || event.key == "ArrowDown") &&
     document.getElementById("tab_" + obj.id).nextSibling ) {
 
       // Insert <li> after its next sibling
