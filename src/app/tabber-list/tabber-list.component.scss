@@ -5,38 +5,38 @@
 li.li_tab{
 	list-style:none;
 	clear: both;
+	
+	a.a_tab{
+		display:block;
+		background-color:white;
+		border:#ccc 2px solid;
+		border-radius: 5px;
 
-	display:block;
-	background-color:white;
-	border:#ccc 2px solid;
-	border-radius: 5px;
+		width:400px;
+		padding:25px;
+		margin-bottom:10px;
 
-	width:400px;
-	padding:25px;
-	margin-bottom:10px;
+		color: #666;
 
-	color: #666;
+	  text-decoration: none;
+	  float:left;
+	}
 
-  text-decoration: none;
-  float:left;
-
-	&.selected{
+	&.selected a.a_tab{
 		color:white;
 		background-color: #09F;
 		border-color:#999;
+	}
 
-		&:before{
-			width:100px;
-			height:100px;
-			display:inline-block;
-			content:"\21A8";
-			font-size:44pt;
-			color: #09F;
-			text-decoration: none;
-			position: absolute;
-			left: 525px;
-			margin-top: -20px;
-		}
+	&.selected:after{
+		width:100px;
+		height:100px;
+		display:inline-block;
+		content:"\21A8";
+		font-size:44pt;
+		color: #09F;
+		float:left;
+		text-decoration:none;
 	}
 }
 

@@ -1,18 +1,18 @@
-<header>
-	<h1>Use tab button to choose down, use shift+tab to choose up</h1>
-	<h2>Use up and down arrows to move the chosen item</h2>
-</header>
+<h1>Use tab button to choose down, use shift+tab to choose up</h1>
+<h2>Use up and down arrows to move the chosen item</h2>
 
-<main>
-	<ul class="tabs" id="theTabs">
-		<li *ngFor="let tab of tabs" (keydown)="onKeydown($event, tab)" id="li_tab_{{tab.id}}" class="li_tab" tabindex="{{tab.id+1}}">
-			<a name="{{tab.id}}">&nbsp;</a>
-			<span class="badge">{{tab.id}}</span> {{tab.name}}
-		</li>
-	</ul>
+<ul class="tabs" id="theTabs">
+  <li *ngFor="let tab of tabs" (keydown)="onKeydown($event, tab)" id="li_tab_{{tab.id}}" class="li_tab">
 
-	<a name="reset">&nbsp;</a>
-	<a href="#reset" (click)="tabsReset()" class="resetLink">
-		RESET
-	</a>
-</main>
+  		<a name="{{tab.id}}">&nbsp;</a>
+      <a href="#{{tab.id}}" id="a_tab_{{tab.id}}" class="a_tab">
+      	<span class="badge">{{tab.id}}</span> {{tab.name}}
+      </a>
+
+  </li>
+</ul>
+
+<a name="reset">&nbsp;</a>
+<a href="#reset" (click)="tabsReset()" class="resetLink">
+	RESET
+</a>
