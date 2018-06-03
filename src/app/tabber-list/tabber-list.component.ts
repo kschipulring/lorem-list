@@ -16,13 +16,13 @@ export class TabberListComponent implements OnInit {
     document.addEventListener('keyup', function(e) {
       if( 9 == (e.keyCode || e.metaKey || e.ctrlKey) ){
 
-        var elems = document.querySelectorAll(".tab");
+        var elems = document.querySelectorAll(".a_tab");
 
         [].forEach.call(elems, function(el) {
-          el.classList.remove("tabselected");
+          el.parentElement.classList.remove("selected");
         });
 
-        document.activeElement.classList.add('tabselected');
+        document.activeElement.parentElement.classList.add('selected');
       }
     }, false);
   }
@@ -43,18 +43,18 @@ export class TabberListComponent implements OnInit {
     if ( event.code == "ArrowUp" || event.key == "ArrowUp" ) {
 
       // Insert this <li> before it's earlier sibling
-      theTabs.insertBefore(document.getElementById("tab_" + obj.id), document.getElementById("tab_" + obj.id).previousSibling );
+      theTabs.insertBefore(document.getElementById("li_tab_" + obj.id), document.getElementById("li_tab_" + obj.id).previousSibling );
     }
 
     if ( ( event.code == "ArrowDown" || event.key == "ArrowDown") &&
-    document.getElementById("tab_" + obj.id).nextSibling ) {
+    document.getElementById("li_tab_" + obj.id).nextSibling ) {
 
       // Insert <li> after its next sibling
-      theTabs.insertBefore(document.getElementById("tab_" + obj.id), document.getElementById("tab_" + obj.id).nextSibling.nextSibling );
+      theTabs.insertBefore(document.getElementById("li_tab_" + obj.id), document.getElementById("li_tab_" + obj.id).nextSibling.nextSibling );
     }
 
     //refocus the tabbed element
-    document.getElementById("a_" + obj.id).focus();
+    document.getElementById("a_tab_" + obj.id).focus();
   }
 
   tabsReset(): void{
@@ -63,7 +63,7 @@ export class TabberListComponent implements OnInit {
     var elems = document.querySelectorAll(".li_tab");
 
     for( var i=0; i<this.tabs.length; i++ ){
-      var theId = "tab_" + i;
+      var theId = "li_tab_" + i;
 
       var el = document.getElementById( theId );
 
@@ -73,7 +73,7 @@ export class TabberListComponent implements OnInit {
       theTabs.insertBefore(el, theTabs.childNodes[ theId ]);
 
       //remove the focus appearance
-      el.classList.remove("tabselected");
+      el.classList.remove("selected");
     }
   }
 }
