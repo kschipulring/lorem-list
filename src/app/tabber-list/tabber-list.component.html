@@ -4,11 +4,15 @@
 <ul class="tabs" id="theTabs">
   <li *ngFor="let tab of tabs" (keydown)="onKeydown($event, tab)" id="li_tab_{{tab.id}}" class="li_tab">
 
-      <a href="#{{tab.id}}" id="a_tab_{{tab.id}}" class="a_tab"><span class="badge">{{tab.id}}</span> {{tab.name}}</a>
+  		<a name="{{tab.id}}">&nbsp;</a>
+      <a href="#{{tab.id}}" id="a_tab_{{tab.id}}" class="a_tab">
+      	<span class="badge">{{tab.id}}</span> {{tab.name}}
+      </a>
 
   </li>
 </ul>
 
+<a name="reset">&nbsp;</a>
 <a href="#reset" (click)="tabsReset()" class="resetLink">
 	RESET
 </a>
