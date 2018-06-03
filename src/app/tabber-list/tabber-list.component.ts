@@ -16,13 +16,13 @@ export class TabberListComponent implements OnInit {
     document.addEventListener('keyup', function(e) {
       if( 9 == (e.keyCode || e.metaKey || e.ctrlKey) ){
 
-        var elems = document.querySelectorAll(".a_tab");
+        var elems = document.querySelectorAll(".li_tab");
 
         [].forEach.call(elems, function(el) {
-          el.parentElement.classList.remove("selected");
+          el.classList.remove("selected");
         });
 
-        document.activeElement.parentElement.classList.add('selected');
+        document.activeElement.classList.add('selected');
       }
     }, false);
   }
@@ -53,8 +53,25 @@ export class TabberListComponent implements OnInit {
       theTabs.insertBefore(document.getElementById("li_tab_" + obj.id), document.getElementById("li_tab_" + obj.id).nextSibling.nextSibling );
     }
 
+    this.tabIndexReset();
+
     //refocus the tabbed element
-    document.getElementById("a_tab_" + obj.id).focus();
+    document.getElementById("li_tab_" + obj.id).focus();
+  }
+
+  /* the tab index attribute for each list item needs to be resetted
+  after each arrow move or reset operation for correct continued operation */
+  tabIndexReset(): void{
+    var elems = document.querySelectorAll(".li_tab");
+
+    var i = 0;
+
+    [].forEach.call(elems, function(el) {
+
+      el.tabIndex = i+1;
+
+      i++;
+    });
   }
 
   tabsReset(): void{
@@ -75,5 +92,7 @@ export class TabberListComponent implements OnInit {
       //remove the focus appearance
       el.classList.remove("selected");
     }
+
+    this.tabIndexReset();
   }
 }
