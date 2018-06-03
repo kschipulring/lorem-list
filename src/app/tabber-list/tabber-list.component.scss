@@ -5,22 +5,20 @@
 li.li_tab{
 	list-style:none;
 	clear: both;
-	
-	//a.a_tab{
-		display:block;
-		background-color:white;
-		border:#ccc 2px solid;
-		border-radius: 5px;
 
-		width:400px;
-		padding:25px;
-		margin-bottom:10px;
+	display:block;
+	background-color:white;
+	border:#ccc 2px solid;
+	border-radius: 5px;
 
-		color: #666;
+	width:400px;
+	padding:25px;
+	margin-bottom:10px;
 
-	  text-decoration: none;
-	  float:left;
-	//}
+	color: #666;
+
+  text-decoration: none;
+  float:left;
 
 	&.selected{
 		color:white;
@@ -33,12 +31,9 @@ li.li_tab{
 			display:inline-block;
 			content:"\21A8";
 			font-size:44pt;
-			color: #F00;
-			/* float: right; */
+			color: #09F;
 			text-decoration: none;
 			position: absolute;
-			/* left: 155px; */
-			/* top: -35px; */
 			left: 525px;
 			margin-top: -20px;
 		}
