@@ -1,5 +1,5 @@
-<h2>Use tab button to choose down, use shift+tab to choose up</h2>
-<h3>Use up and down arrows to move the chosen item</h3>
+<h1>Use tab button to choose down, use shift+tab to choose up</h1>
+<h2>Use up and down arrows to move the chosen item</h2>
 
 <ul class="tabs" id="theTabs">
   <li *ngFor="let tab of tabs" (keydown)="onKeydown($event, tab)" id="li_tab_{{tab.id}}" class="li_tab">
