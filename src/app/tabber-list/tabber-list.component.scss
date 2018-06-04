@@ -2,6 +2,17 @@
 	font-family:Trebuchet, Arial, sans-serif;
 }
 
+ul:after{
+	width:100px;
+	height:100px;
+	display:inline-block;
+	content:"\21A3";
+	font-size:44pt;
+	color: #09F;
+	float:left;
+	text-decoration:none;
+}
+
 li.li_tab{
 	list-style:none;
 	clear: both;
@@ -26,17 +37,6 @@ li.li_tab{
 		color:white;
 		background-color: #09F;
 		border-color:#999;
-	}
-
-	&.selected:after{
-		width:100px;
-		height:100px;
-		display:inline-block;
-		content:"\21A8";
-		font-size:44pt;
-		color: #09F;
-		float:left;
-		text-decoration:none;
 	}
 }
 

@@ -12,23 +12,29 @@ export class TabberListComponent implements OnInit {
 
 	tabs: Tab[];
 
-  constructor(private tabContentsService: TabContentsService) {
-    document.addEventListener('keyup', function(e) {
-      if( 9 == (e.keyCode || e.metaKey || e.ctrlKey) ){
+  tabsDOM: object;
 
-        var elems = document.querySelectorAll(".a_tab");
+  currentTab: number;
 
-        [].forEach.call(elems, function(el) {
-          el.parentElement.classList.remove("selected");
-        });
+  //runs as soon as a class instance is on the page
+  constructor(private tabContentsService: TabContentsService) {}
 
-        document.activeElement.parentElement.classList.add('selected');
-      }
-    }, false);
-  }
-
+  //equivalent of document.ready. always executes after 'constructor' method, when the full document loads
   ngOnInit(): void {
   	this.getTabs();
+
+    document.that = this;
+
+    document.addEventListener('keyup', function(e) {
+      if( 9 == (e.keyCode || e.metaKey || e.ctrlKey) ){
+        var ct = document.activeElement.parentElement.dataset.tid;
+
+        document.that.tabSwitch( ct );
+      }
+    }, false);
+
+    //this represents the master ul element, parent to all tabs
+    this.tabsDOM = document.getElementById("theTabs");
   }
 
   getTabs(): void {
@@ -36,21 +42,26 @@ export class TabberListComponent implements OnInit {
     .subscribe(tabs => this.tabs = tabs);
   }
 
-  onKeydown(event, obj): void {
-    // Get the <ul> element which is the parent of the tabs
-    var theTabs = document.getElementById("theTabs");
+  tabSwitch(ct):void {
+    this.currentTab = parseInt(ct);
 
+    console.log("this.currentTab = ", this.currentTab);
+  }
+
+  onKeydown(event, obj): void {
     if ( event.code == "ArrowUp" || event.key == "ArrowUp" ) {
 
       // Insert this <li> before it's earlier sibling
-      theTabs.insertBefore(document.getElementById("li_tab_" + obj.id), document.getElementById("li_tab_" + obj.id).previousSibling );
+      this.tabsDOM.insertBefore(document.getElementById("li_tab_" + obj.id),
+        document.getElementById("li_tab_" + obj.id).previousSibling );
     }
 
     if ( ( event.code == "ArrowDown" || event.key == "ArrowDown") &&
     document.getElementById("li_tab_" + obj.id).nextSibling ) {
 
       // Insert <li> after its next sibling
-      theTabs.insertBefore(document.getElementById("li_tab_" + obj.id), document.getElementById("li_tab_" + obj.id).nextSibling.nextSibling );
+      this.tabsDOM.insertBefore(document.getElementById("li_tab_" + obj.id),
+        document.getElementById("li_tab_" + obj.id).nextSibling.nextSibling );
     }
 
     //refocus the tabbed element
@@ -58,7 +69,7 @@ export class TabberListComponent implements OnInit {
   }
 
   tabsReset(): void{
-    var theTabs = document.getElementById("theTabs");
+    //var theTabs = document.getElementById("theTabs");
 
     var elems = document.querySelectorAll(".li_tab");
 
@@ -70,10 +81,16 @@ export class TabberListComponent implements OnInit {
       //remove the focus from this tab
       el.blur();
 
-      theTabs.insertBefore(el, theTabs.childNodes[ theId ]);
+      //push this tab back to its origin point
+      this.tabsDOM.insertBefore(el, this.tabsDOM.childNodes[ theId ]);
 
       //remove the focus appearance
       el.classList.remove("selected");
     }
+  }
+
+  //when the onscreen arrow is clicked, this executes
+  upClickButton(): void{
+
   }
 }
