@@ -8,17 +8,18 @@ import { TabContentsService } from '../tab-contents.service';
   templateUrl: './tabber-list.component.html',
   styleUrls: ['./tabber-list.component.scss']
 })
+
 export class TabberListComponent implements OnInit {
 
 	tabs: Tab[];
 
-  tabsDOM: object;
+  tabsDOM: HTMLElement;
 
   currentTab: number;
 
-  disabledTop: true;
+  disabledTop: boolean;
 
-  disabledBottom: true;
+  disabledBottom: boolean;
 
   //runs as soon as a class instance is on the page
   constructor(private tabContentsService: TabContentsService) {
@@ -26,7 +27,9 @@ export class TabberListComponent implements OnInit {
 
     //deals with bug for page refreshes when before something was tab focused
     if ("activeElement" in document){
-      document.activeElement.blur();
+      var ae:HTMLElement = <HTMLElement> document.activeElement;
+
+      ae.blur();
     }
   }
 
@@ -34,7 +37,7 @@ export class TabberListComponent implements OnInit {
   ngOnInit(): void {
   	this.getTabs();
 
-    document.that = this;
+    (window as any).that = this;
 
     document.addEventListener('keyup', function(e) {
       if( (9 == (e.keyCode || e.metaKey || e.ctrlKey)) && document.activeElement.id ){
@@ -42,11 +45,11 @@ export class TabberListComponent implements OnInit {
         if( document.activeElement.id != "resetLink" ){
           var ct = document.activeElement.parentElement.dataset.tid;
 
-          document.that.tabSwitch( ct );
+          (window as any).that.tabSwitch( ct );
         }
 
         //fiddle with those blue/gray buttons
-        document.that.buttonGrayMaster();
+        (window as any).that.buttonGrayMaster();
       }
     }, false);
 
@@ -55,7 +58,9 @@ export class TabberListComponent implements OnInit {
 
     //deals with bug for page refreshes when before something was tab focused
     if ("activeElement" in document){
-      document.activeElement.blur();
+      var ae:HTMLElement = <HTMLElement> document.activeElement;
+
+      ae.blur();
     }
 
     this.tabsReset();
@@ -73,7 +78,7 @@ export class TabberListComponent implements OnInit {
       return;
     }
 
-    var ide = parseInt(this.getNodeIndex( actP ));
+    var ide:number = this.getNodeIndex( actP );
 
     //should the onscreen up arrow be disabled?
     if( ide > 0 ){
