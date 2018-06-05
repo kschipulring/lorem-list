@@ -14,12 +14,14 @@
 	  </li>
 	</ul>
 
-	<div id="upClickButton" (click)="shiftTabLocation(true)"
-	[ngClass]="{'disabled': disabledTop === true}"></div>
+	<div id="buttonContainer">
+		<div id="upClickButton" (click)="shiftTabLocation(true)"
+		[ngClass]="{'disabled': disabledTop === true}"></div>
 
-	<div id="downClickButton" (click)="shiftTabLocation(false)"
-	[ngClass]="{'disabled': disabledBottom === true}"
-	></div>
+		<div id="downClickButton" (click)="shiftTabLocation(false)"
+		[ngClass]="{'disabled': disabledBottom === true}"
+		></div>
+	</div>
 
 	<a name="reset">&nbsp;</a>
 	<a href="#reset" (click)="tabsReset()" class="resetLink" id="resetLink">
