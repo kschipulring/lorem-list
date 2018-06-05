@@ -3,12 +3,12 @@
 	<h2>Use up and down arrows to move the chosen item</h2>
 </header>
 <main>
-	<ul class="tabs" id="theTabs">
+	<ul class="tabs" id="theTabs" role="tablist">
 	  <li *ngFor="let tab of tabs" (keydown)="onArrowKey($event, tab)"
 	  id="li_tab_{{tab.id}}" [ngClass]="{'li_tab': true, 'selected':currentTab === tab.id}"
-	  [attr.data-tid]="tab.id">
+	  [attr.data-tid]="tab.id" role="presentation">
   		<a name="{{tab.id}}">&nbsp;</a>
-      <a href="#{{tab.id}}" id="a_tab_{{tab.id}}" class="a_tab">
+      <a href="#{{tab.id}}" id="a_tab_{{tab.id}}" class="a_tab" role="tab">
       	<span class="badge">{{tab.id}}</span> {{tab.name}}
       </a>
 	  </li>
@@ -17,16 +17,17 @@
 	<div id="buttonContainer">
 		<div id="upClickButton" (click)="shiftTabLocation(true)"
 		[ngClass]="{'disabled': disabledTop === true}"
-		aria-label="Move selected item up"></div>
+		aria-label="Move selected item up" role="button" aria-pressed="false"></div>
 
 		<div id="downClickButton" (click)="shiftTabLocation(false)"
 		[ngClass]="{'disabled': disabledBottom === true}"
-		aria-label="Move selected item down"></div>
+		aria-label="Move selected item down" role="button" aria-pressed="false">
+		</div>
 	</div>
 
 	<a name="reset">&nbsp;</a>
 	<a href="#reset" (click)="tabsReset()" class="resetLink" id="resetLink"
-	aria-label="reset the item list">
+	aria-label="reset the item list" role="button" aria-pressed="false">
 		RESET
 	</a>
 </main>
