@@ -4,8 +4,9 @@
 </header>
 <main>
 	<ul class="tabs" id="theTabs">
-	  <li *ngFor="let tab of tabs" (keydown)="onKeydown($event, tab)"
-	  id="li_tab_{{tab.id}}" class="li_tab" [ngClass]="{'selected':currentTab === tab.id}" [attr.data-tid]="tab.id">
+	  <li *ngFor="let tab of tabs" (keydown)="onArrowKey($event, tab)"
+	  id="li_tab_{{tab.id}}" [ngClass]="{'li_tab': true, 'selected':currentTab === tab.id}"
+	  [attr.data-tid]="tab.id">
   		<a name="{{tab.id}}">&nbsp;</a>
       <a href="#{{tab.id}}" id="a_tab_{{tab.id}}" class="a_tab">
       	<span class="badge">{{tab.id}}</span> {{tab.name}}
@@ -13,11 +14,15 @@
 	  </li>
 	</ul>
 
-	<div id="upClickButton" (click)="upClickButton()"></div>
-	<div id="downClickButton" (click)="downClickButton()"></div>
+	<div id="upClickButton" (click)="shiftTabLocation(true)"
+	[ngClass]="{'disabled': disabledTop === true}"></div>
+
+	<div id="downClickButton" (click)="shiftTabLocation(false)"
+	[ngClass]="{'disabled': disabledBottom === true}"
+	></div>
 
 	<a name="reset">&nbsp;</a>
-	<a href="#reset" (click)="tabsReset()" class="resetLink">
+	<a href="#reset" (click)="tabsReset()" class="resetLink" id="resetLink">
 		RESET
 	</a>
 </main>

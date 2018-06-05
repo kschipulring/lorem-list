@@ -16,8 +16,19 @@ export class TabberListComponent implements OnInit {
 
   currentTab: number;
 
+  disabledTop: true;
+
+  disabledBottom: true;
+
   //runs as soon as a class instance is on the page
-  constructor(private tabContentsService: TabContentsService) {}
+  constructor(private tabContentsService: TabContentsService) {
+    this.currentTab = -1;
+
+    //deals with bug for page refreshes when before something was tab focused
+    if ("activeElement" in document){
+      document.activeElement.blur();
+    }
+  }
 
   //equivalent of document.ready. always executes after 'constructor' method, when the full document loads
   ngOnInit(): void {
@@ -26,51 +37,135 @@ export class TabberListComponent implements OnInit {
     document.that = this;
 
     document.addEventListener('keyup', function(e) {
-      if( 9 == (e.keyCode || e.metaKey || e.ctrlKey) ){
-        var ct = document.activeElement.parentElement.dataset.tid;
+      if( (9 == (e.keyCode || e.metaKey || e.ctrlKey)) && document.activeElement.id ){
 
-        document.that.tabSwitch( ct );
+        if( document.activeElement.id != "resetLink" ){
+          var ct = document.activeElement.parentElement.dataset.tid;
+
+          document.that.tabSwitch( ct );
+        }
+
+        //fiddle with those blue/gray buttons
+        document.that.buttonGrayMaster();
       }
     }, false);
 
     //this represents the master ul element, parent to all tabs
     this.tabsDOM = document.getElementById("theTabs");
+
+    //deals with bug for page refreshes when before something was tab focused
+    if ("activeElement" in document){
+      document.activeElement.blur();
+    }
   }
 
+  buttonGrayMaster(): void{
+
+    //determine whether a tab is in focus or a clickable button has been clicked
+    var actP = (document.activeElement.parentElement.tagName == "LI")?
+    document.activeElement.parentElement : document.getElementsByClassName("selected")[0];
+
+    var ide = parseInt(this.getNodeIndex( actP ));
+
+    //if( actP.parentElement.previousElementSibling ){
+    if( ide > 0 ){
+      this.disabledTop = false;
+    }else{
+      this.disabledTop = true;
+    }
+
+    //if( actP.parentElement.nextElementSibling ){
+    if( ide < this.tabs.length-1 ){
+      this.disabledBottom = false;
+    }else{
+      this.disabledBottom = true;
+    }
+  }
+
+  /* 
+  replacement for a jquery technique.
+  find out where the index of the currently selected element is
+  */
+  getNodeIndex(node): number {
+    var index = -1;
+
+    if( !node || !node.parentNode ){
+      return index;
+    }
+
+    var theParent = node.parentNode;
+
+    index = Array.prototype.indexOf.call(theParent.children, node);
+
+    return index;
+  }
+
+  //load the json content from the service into the template
   getTabs(): void {
     this.tabContentsService.getTabs()
     .subscribe(tabs => this.tabs = tabs);
   }
 
-  tabSwitch(ct):void {
+  //when someone hits the tab key
+  tabSwitch(ct): void {
     this.currentTab = parseInt(ct);
 
-    console.log("this.currentTab = ", this.currentTab);
+    var didA = document.getElementById( "a_tab_" + this.currentTab );
+
+    didA.focus();
+
+    //fiddle with those blue/gray buttons
+    this.buttonGrayMaster();
   }
 
-  onKeydown(event, obj): void {
+  //effectively only for the keyboard arrows
+  onArrowKey(event, obj): void {
     if ( event.code == "ArrowUp" || event.key == "ArrowUp" ) {
-
-      // Insert this <li> before it's earlier sibling
-      this.tabsDOM.insertBefore(document.getElementById("li_tab_" + obj.id),
-        document.getElementById("li_tab_" + obj.id).previousSibling );
+      this.shiftTabLocation(true);
     }
 
     if ( ( event.code == "ArrowDown" || event.key == "ArrowDown") &&
     document.getElementById("li_tab_" + obj.id).nextSibling ) {
-
-      // Insert <li> after its next sibling
-      this.tabsDOM.insertBefore(document.getElementById("li_tab_" + obj.id),
-        document.getElementById("li_tab_" + obj.id).nextSibling.nextSibling );
+      this.shiftTabLocation(false);
     }
 
     //refocus the tabbed element
     document.getElementById("a_tab_" + obj.id).focus();
+
+    //fiddle with those blue/gray buttons
+    this.buttonGrayMaster();
   }
 
-  tabsReset(): void{
-    //var theTabs = document.getElementById("theTabs");
+  //when either a keyboard up/down arrow or onscreen arrow is hit
+  shiftTabLocation(up:boolean): void{
+    var didL = document.getElementById("li_tab_" + this.currentTab);
+    var didA = document.getElementById("a_tab_" + this.currentTab);
 
+    if( up ){
+      //indicate whether this item is now at the top of the stack.  if so, stop everything else.
+      if( this.getNodeIndex(didL) < 1 ){
+        return;
+      }
+
+      // Insert this <li> before it's earlier sibling
+      this.tabsDOM.insertBefore(didL, didL.previousSibling );
+    }else{
+
+      if( didL.nextSibling ){
+        // Insert <li> after its next sibling
+        this.tabsDOM.insertBefore(didL, didL.nextSibling.nextSibling );
+      }
+    }
+
+    this.buttonGrayMaster();
+    
+    //placed the moved element into focus
+    didA.focus();
+  }
+
+  //fires when the reset link is hit
+  tabsReset(): void{
+    //defined here rather than in ngOnInit, because we want its current state
     var elems = document.querySelectorAll(".li_tab");
 
     for( var i=0; i<this.tabs.length; i++ ){
@@ -87,10 +182,11 @@ export class TabberListComponent implements OnInit {
       //remove the focus appearance
       el.classList.remove("selected");
     }
-  }
 
-  //when the onscreen arrow is clicked, this executes
-  upClickButton(): void{
+    //reset the current tab here, because it is supposed to be like initial state
+    this.currentTab = -1;
 
+    this.disabledTop = true;
+    this.disabledBottom = true;
   }
 }
