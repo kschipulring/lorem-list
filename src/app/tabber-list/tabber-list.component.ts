@@ -57,6 +57,8 @@ export class TabberListComponent implements OnInit {
     if ("activeElement" in document){
       document.activeElement.blur();
     }
+
+    this.tabsReset();
   }
 
   buttonGrayMaster(): void{
@@ -65,16 +67,22 @@ export class TabberListComponent implements OnInit {
     var actP = (document.activeElement.parentElement.tagName == "LI")?
     document.activeElement.parentElement : document.getElementsByClassName("selected")[0];
 
+    //don't want the reset link to meddle with the disabling of on-screen arrows
+    if( document.activeElement.tagName == "A" &&
+    document.activeElement.parentElement.tagName != "LI" ){
+      return;
+    }
+
     var ide = parseInt(this.getNodeIndex( actP ));
 
-    //if( actP.parentElement.previousElementSibling ){
+    //should the onscreen up arrow be disabled?
     if( ide > 0 ){
       this.disabledTop = false;
     }else{
       this.disabledTop = true;
     }
 
-    //if( actP.parentElement.nextElementSibling ){
+    //should the onscreen down arrow be disabled?
     if( ide < this.tabs.length-1 ){
       this.disabledBottom = false;
     }else{
@@ -173,14 +181,16 @@ export class TabberListComponent implements OnInit {
 
       var el = document.getElementById( theId );
 
-      //remove the focus from this tab
-      el.blur();
+      if(el){
+        //remove the focus from this tab
+        el.blur();
 
-      //push this tab back to its origin point
-      this.tabsDOM.insertBefore(el, this.tabsDOM.childNodes[ theId ]);
+        //push this tab back to its origin point
+        this.tabsDOM.insertBefore(el, this.tabsDOM.childNodes[ theId ]);
 
-      //remove the focus appearance
-      el.classList.remove("selected");
+        //remove the focus appearance
+        el.classList.remove("selected");
+      }
     }
 
     //reset the current tab here, because it is supposed to be like initial state
